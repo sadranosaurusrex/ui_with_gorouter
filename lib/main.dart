@@ -4,7 +4,9 @@ import 'pages/home_page.dart';
 import 'pages/explore_page.dart';
 import 'pages/setting_page.dart';
 import 'pages/details_page.dart';
-import 'pages/widgets/scaffold_with_nav_bar.dart';
+import 'widgets/scaffold_with_nav_bar.dart';
+import 'sevices/auth_service.dart';
+import 'pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +14,32 @@ void main() {
 
 final GoRouter _router = GoRouter(
   initialLocation: '/',
+  refreshListenable: globalAuthService,
+  redirect: (context, state) {
+    final isLoggedIn = globalAuthService.isAuthenticated;
+    final isGuardEnabled = globalAuthService.isAuthGuardEnabled;
+    final isOnLoginPage = state.matchedLocation == '/login';
+
+    if (!isGuardEnabled) {
+      return null; // No redirection if auth guard is disabled
+    }
+
+    if (!isLoggedIn && !isOnLoginPage) {
+      return '/login'; // Redirect to login if not logged in
+    }
+
+    if (isLoggedIn && isOnLoginPage) {
+      return '/'; // Redirect to home if logged in and on login page
+    }
+
+    return null; // No redirection needed
+  },
   routes: [
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginPage(),
+    ),
+
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return ScaffoldWithNavBar(navigationShell: navigationShell);
