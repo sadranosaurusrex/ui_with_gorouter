@@ -15,7 +15,7 @@ class DetailsPage extends StatelessWidget {
             const Text('This is the Details page!'),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => context.go('/'),
+              onPressed: () => context.pop(),
               child: const Text('Go back to Home'),
             ),
           ],
