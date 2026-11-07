@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'pages/home_page.dart';
+import 'pages/details_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +12,10 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: '/details',
+      builder: (context, state) => const DetailsPage(),
     ),
   ],
 );
